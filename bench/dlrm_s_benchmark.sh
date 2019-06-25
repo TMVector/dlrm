@@ -12,16 +12,16 @@ else
 fi
 #echo $dlrm_extra_option
 
-build=1
+build=0
 cpu=1
 gpu=1
 pt=1
 c2=1
 
-ncores=28 #12 #6
+ncores=12
 nsockets="0"
 
-ngpus="1 2 4 8"
+ngpus="1"
 
 numa_cmd="numactl --physcpubind=0-$((ncores-1)) -m $nsockets" #run on one socket, without HT
 dlrm_pt_bin="python dlrm_s_pytorch.py"
@@ -34,13 +34,14 @@ rand_seed=727
 c2_net="async_scheduling"
 
 #Model param
-mb_size=2048 #1024 #512 #256
+# RM1
+mb_size=256 #2048 #1024 #512 #256
 nbatches=1000 #500 #100
-bot_mlp="512-512-64"
-top_mlp="1024-1024-1024-1"
-emb_size=64
-nindices=100
-emb="1000000-1000000-1000000-1000000-1000000-1000000-1000000-1000000"
+bot_mlp="128-64-32"
+top_mlp="128-32-1"
+emb_size=32
+nindices=80
+emb="100000-100000-100000-100000-100000"
 interaction="dot"
 
 #_args="--mini-batch-size="${mb_size}\
@@ -55,6 +56,7 @@ _args=" --num-batches="${nbatches}\
 " --numpy-rand-seed="${rand_seed}\
 " --print-freq="${print_freq}\
 " --print-time"\
+" --inference-only"\
 " --enable-profiling "
 
 c2_args=" --caffe2-net-type="${c2_net}
